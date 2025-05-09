@@ -11,12 +11,31 @@ public class ContrinuousAttribute extends Attribute {
     private double min;
 
     /**
-     * Inizializza i valori dei membri name, index
-     *
-     * @param name  nome attributo
-     * @param index identificativo numerico dell'attributo
+     * Invoca il costruttore della classe madre e inizializza i membri aggiunti per estensione
+     * @param name nome
+     * @param index identificativo numerico
+     * @param min valore minimo attributo nel suo dominio
+     * @param max valore massimo attributo nel suo dominio
      */
-    public ContrinuousAttribute(String name, int index) {
-        super(name, index);
+    public ContrinuousAttribute(String name, int index, double min, double max)
+    {
+        super(name,index);
+        this.max = max;
+        this.min = min;
     }
+
+    /**
+     * Calcola e restituisce il valore scalato del parametro passato in input.
+     * Lo scaling ha come codominio l'intervallo [0,1]
+     * Lo scaling di v è quindi calcolato : v' = (v-min)/(max-min)
+     * @param v
+     * @return
+     */
+    double getScaledValue(double v)
+    {
+        double result;
+        result = (v-min) / (max-min);
+        return result;
+    }
+
 }

@@ -37,6 +37,10 @@ abstract class Attribute {
         return index;
     }
 
+    /**
+     * Restituisce una stringa rappresentante  lo stato dell'oggetto
+     * @return
+     */
     @Override
     public String toString(){
         return name;
