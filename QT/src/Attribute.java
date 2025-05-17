@@ -1,5 +1,5 @@
 /**
- *
+ * Classe astratta Attribute che modella la entità attributo
  */
 abstract class Attribute {
     /**

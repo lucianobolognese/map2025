@@ -218,6 +218,20 @@ public class Data {
 		return result;
 	}
 
+	/**
+	 * Crea e restituisce un oggetto di Tuple che modella come sequenza di coppie Attributo-valore
+	 * la i-esima riga in data.
+	 * @param index
+	 * @return tuple
+	 */
+	public Tuple getItemSet(int index){
+		Tuple tuple = new Tuple(explanatorySet.length);
+		for(int i=0; i<explanatorySet.length;i++)
+			tuple.add(new DiscreteItem((DiscreteAttribute) explanatorySet[i],(String)data[index][i]),i);
+		return tuple;
+
+	}
+
 
 	
 	public static void main(String args[]){
