@@ -19,9 +19,9 @@ public class DiscreteItem extends Item {
      * @return
      */
     public double distance(Object a) {
-        if(getValue().equals(a))
-            return 0;
+        if(this.getValue().equals(a))
+            return 0.0;
         else
-            return 1;
+            return 1.0;
     }
 }

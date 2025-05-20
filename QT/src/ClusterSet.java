@@ -41,6 +41,7 @@ public class ClusterSet {
         return result;
     }
 
+    // fornita
     public String toString(Data data){
         String str="";
         for(int i=0; i<C.length; i++){

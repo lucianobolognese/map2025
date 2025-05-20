@@ -24,6 +24,7 @@ public class QTMiner {
     }
 
     /**
+     * Fornita
      * Esegue l'algoritmo QT eseguendo i passi dello pseudo-codice:
      * 1. Costruisce un cluster per ciascuna tupla non ancora clusterizzata, includendo nel cluster i punti
      * (non ancora clusterizzati in alcun altro cluster) che ricadano nel vicinato sferico della tupla
@@ -69,8 +70,28 @@ public class QTMiner {
      * @param isClustered informazione booleana sullo stato di clusterizzazione di una tupla
      */
     Cluster buildCandidateCluster(Data data, boolean isClustered[]){
-        Cluster c = new Cluster(data.getItemSet());
-        return c;
+        Cluster bestCluster = null;
+        int maxSize = -1;
+
+        for(int i=0; i < data.getNumberOfExamples(); i++){
+            if(isClustered[i]) continue;
+            
+            // Costruisco un nuovo cluster candidato con centro la tupla i
+            Cluster candidate = new Cluster(data.getItemSet(i));
+            for(int j=0; j< data.getNumberOfExamples(); j++){
+                if(!isClustered[j] && data.getItemSet(i).getDistance(data.getItemSet(j)) <= radius) {
+                    candidate.addData(j);
+                }
+            }
+
+            // Se il cluster più popoloso finora, lo salvo
+            if(candidate.getSize() > maxSize) {
+                bestCluster = candidate;
+                maxSize = candidate.getSize();
+            }
+
+        }
+        return bestCluster;
     }
 
 }

@@ -45,10 +45,14 @@ public class Tuple {
      * @param obj typla da confrontare
      * @return distance somma delle distanze tra item nelle posizioni uguali delle due tuple
      */
-    double getDistance(Tuple obj){
-        double distance=0;
-        for(int i=0; i<getLength(); i++){
-            distance += this.tuple[i].distance(obj.tuple[i]);
+    public double getDistance(Tuple obj){
+        double distance=0.0;
+        int length = this.getLength();
+
+        for(int i=0; i<length; i++){
+            Object value2 = obj.get(i).getValue();
+            distance += this.get(i).distance(value2);
+            //distance += this.tuple[i].distance(obj.tuple[i]);
         }
         return distance;
     }

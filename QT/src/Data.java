@@ -125,24 +125,24 @@ public class Data {
 		explanatorySet[0] = new DiscreteAttribute("Outlook",0, outLookValues);
 
 		String temperatureValues[]=new String[3];
-		outLookValues[0]="hot";
-		outLookValues[1]="mild";
-		outLookValues[2]="cool";
+		temperatureValues[0]="hot";
+		temperatureValues[1]="mild";
+		temperatureValues[2]="cool";
 		explanatorySet[1] = new DiscreteAttribute("Temperature",1, temperatureValues);
 
 		String humidityValues[]=new String[2];
-		outLookValues[0]="high";
-		outLookValues[1]="normal";
+		humidityValues[0]="high";
+		humidityValues[1]="normal";
 		explanatorySet[2] = new DiscreteAttribute("Humidity",2, humidityValues);
 
-		String windValues[]=new String[3];
-		outLookValues[0]="weak";
-		outLookValues[1]="strong";
+		String windValues[]=new String[2];
+		windValues[0]="weak";
+		windValues[1]="strong";
 		explanatorySet[3] = new DiscreteAttribute("Wind",3, windValues);
 
 		String playTennisValues[]=new String[2];
-		outLookValues[0]="yes";
-		outLookValues[1]="no";
+		playTennisValues[0]="yes";
+		playTennisValues[1]="no";
 		explanatorySet[4] = new DiscreteAttribute("PlayTennis",4, playTennisValues);
 		
 		
@@ -205,7 +205,7 @@ public class Data {
 		result += explanatorySet[explanatorySet.length-1]+"\n";
 
 		for(int i=0;i<numberOfExamples;i++){
-			result+=i+1+":";
+			result+=i+":";
 			for(int j=0; j<getNumberofExplanatoryAttributes();j++){
 
 				result+=getValue(i,j)+",";
