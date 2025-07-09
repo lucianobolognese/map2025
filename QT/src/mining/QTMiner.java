@@ -38,7 +38,7 @@ public class QTMiner {
      * @param data
      * @return
      */
-    public int compute(Data data){
+    public int compute(Data data) throws ClusteringRadiusException{
         int numclusters=0;
         boolean isClustered[] = new boolean[data.getNumberOfExamples()];
 
@@ -61,6 +61,10 @@ public class QTMiner {
                 isClustered[clusteredTupleId[i]] = true;
             }
             countClustered += c.getSize();
+        }
+
+        if(numclusters ==1){
+            throw new ClusteringRadiusException("Solo un cluster generato dall'algoritmo");
         }
 
         return numclusters;

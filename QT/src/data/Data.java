@@ -19,7 +19,7 @@ public class Data {
 	private Attribute explanatorySet[];
 	
 	
-	public Data(){
+	public Data() throws EmptyDatasetException{
 		
 		//data
 		
@@ -113,6 +113,10 @@ public class Data {
 		// numberOfExamples
 		
 		 numberOfExamples=14;
+
+		 if(numberOfExamples == 0){
+			 throw new EmptyDatasetException("Il dataset risulta vuoto");
+		 }
 		 
 		
 		//explanatory Set
@@ -234,13 +238,5 @@ public class Data {
 
 	}
 
-
-	
-	public static void main(String args[]){
-		Data trainingSet=new Data();
-		System.out.println(trainingSet);
-		
-		
-	}
 
 }
