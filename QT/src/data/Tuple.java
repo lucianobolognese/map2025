@@ -1,5 +1,7 @@
 package data;
 
+import java.util.Set;
+
 /**
  * Rappresenta una tupla come sequenza di coppie attributo-valore
  */
@@ -66,13 +68,34 @@ public class Tuple {
      * @param clusteredData
      * @return average distance
      */
-    public double avgDistance(Data data, int clusteredData[]){
+    public double avgDistance(Data data, Set<Integer> clusteredData){
         double p=0.0, sumD=0.0;
-        for(int i=0; i< clusteredData.length; i++){
-            double d=getDistance(data.getItemSet(clusteredData[i]));
+
+        for(int i : clusteredData){
+            double d = getDistance(data.getItemSet(i));
             sumD += d;
         }
-        p = sumD/ clusteredData.length;
+
+        p=sumD/clusteredData.size();
         return p;
     }
+
+    /**
+     * Sovrascrive toString per utilizzarlo con le tuple
+     * @return sb.toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();;
+
+        for (int i = 0; i < tuple.length; i++) {
+            sb.append(tuple[i].toString());
+            if (i < tuple.length - 1) {
+                sb.append(", ");
+            }
+        }
+
+        return sb.toString();
+    }
+
 }

@@ -1,6 +1,9 @@
 package mining;
 import data.Data;
 
+import java.util.Iterator;
+import java.util.Set;
+
 /**
  * Classe che include l'implementazione dell'algoritmo QT
  */
@@ -55,11 +58,11 @@ public class QTMiner {
             C.add(c);
             numclusters++;
 
-            //Rimuovo tuple clusterizzate da dataset
-            int clusteredTupleId[]=c.iterator();
-            for(int i=0;i<clusteredTupleId.length;i++){
-                isClustered[clusteredTupleId[i]] = true;
+
+            for(Integer tupleID : c){
+                isClustered[tupleID] = true;
             }
+
             countClustered += c.getSize();
         }
 

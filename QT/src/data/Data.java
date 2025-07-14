@@ -1,5 +1,11 @@
 package data;
 
+import com.sun.source.tree.Tree;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeSet;
+
 /**
  * Classe concreta per modellare l'insieme di transazioni (o tuple o anche denominati esempi)
  */
@@ -14,9 +20,9 @@ public class Data {
 	 */
 	private int numberOfExamples;
 	/**
-	 * vettore degli attributi in ciascuna tupla (schema della tabella di dati)
+	 * Lista collegata degli attributi in ciascuna tupla (schema della tabella di dati)
 	 */
-	private Attribute explanatorySet[];
+	private List<Attribute> attributeSet = new LinkedList<Attribute>();
 	
 	
 	public Data() throws EmptyDatasetException{
@@ -117,39 +123,36 @@ public class Data {
 		 if(numberOfExamples == 0){
 			 throw new EmptyDatasetException("Il dataset risulta vuoto");
 		 }
-		 
-		
-		//explanatory Set
-		
-		explanatorySet = new Attribute[5];
 
-		
-		String outLookValues[]=new String[3];
-		outLookValues[0]="overcast";
-		outLookValues[1]="rain";
-		outLookValues[2]="sunny";
-		explanatorySet[0] = new DiscreteAttribute("Outlook",0, outLookValues);
 
-		String temperatureValues[]=new String[3];
-		temperatureValues[0]="hot";
-		temperatureValues[1]="mild";
-		temperatureValues[2]="cool";
-		explanatorySet[1] = new DiscreteAttribute("Temperature",1, temperatureValues);
 
-		String humidityValues[]=new String[2];
-		humidityValues[0]="high";
-		humidityValues[1]="normal";
-		explanatorySet[2] = new DiscreteAttribute("Humidity",2, humidityValues);
+		TreeSet<String> outLookValues = new TreeSet<String>();
+		outLookValues.add("overcast");
+		outLookValues.add("rain");
+		outLookValues.add("sunny");
+		attributeSet.add(new DiscreteAttribute("Outlook",0, outLookValues));
 
-		String windValues[]=new String[2];
-		windValues[0]="weak";
-		windValues[1]="strong";
-		explanatorySet[3] = new DiscreteAttribute("Wind",3, windValues);
+		TreeSet<String> temperatureValues = new TreeSet<String>();
+		temperatureValues.add("hot");
+		temperatureValues.add("mild");
+		temperatureValues.add("cool");
+		attributeSet.add(new DiscreteAttribute("Temperature",1,temperatureValues));
 
-		String playTennisValues[]=new String[2];
-		playTennisValues[0]="yes";
-		playTennisValues[1]="no";
-		explanatorySet[4] = new DiscreteAttribute("PlayTennis",4, playTennisValues);
+
+		TreeSet<String> humidityValues = new TreeSet<String>();
+		humidityValues.add("high");
+		humidityValues.add("normal");
+		attributeSet.add(new DiscreteAttribute("Humidity",2,humidityValues));
+
+		TreeSet<String> windValues = new TreeSet<String>();
+		windValues.add("weak");
+		windValues.add("strong");
+		attributeSet.add(new DiscreteAttribute("Wind",3,windValues));
+
+		TreeSet<String> playTennisValues = new TreeSet<String>();
+		playTennisValues.add("yes");
+		playTennisValues.add("no");
+		attributeSet.add(new DiscreteAttribute("PlayTennis",4,playTennisValues));
 		
 		
 	}
@@ -163,19 +166,19 @@ public class Data {
 	}
 
 	/**
-	 * Restituisce la dimensione di explanatorySet
-	 * @return explanatorySet.length
+	 * Restituisce la dimensione di attributeSet
+	 * @return attributeSet.size()
 	 */
-	public int getNumberofExplanatoryAttributes(){
-		return explanatorySet.length;
+	public int getNumberofAttibuteSet(){
+		return attributeSet.size();
 	}
 
 	/**
 	 * Restituisce lo schema dei dati
-	 * @return explanatorySEt
+	 * @return attributeSet
 	 */
-	public Attribute[] getAttributeSchema(){
-		return explanatorySet;
+	public List<Attribute> getAttributeSchema(){
+		return attributeSet;
 	}
 
 	/**
@@ -190,29 +193,29 @@ public class Data {
 	}
 
 	/**
-	 * Restituisce il valore nell'explanatorySet all'indice indicato
+	 * Restituisce il valore nell'attributeSet all'indice indicato
 	 * @param index indice
-	 * @return explanatorySet[index]
+	 * @return attributeSet.get(index)
 	 */
 	Attribute getAttribute(int index){
-		return explanatorySet[index];
+		return attributeSet.get(index);
 	}
 
 	/**
-	 * Crea una stringa in cui memorizza lo schema della tabella (explanatorySet) e le transazioni memorizzate in data
+	 * Crea una stringa in cui memorizza lo schema della tabella (attributeSet) e le transazioni memorizzate in data
 	 * opportunamente enumerate. Restituisce questa stringa
-	 * @return
+	 * @return result
 	 */
 	public String toString(){
 		String result = "";
-		for(int i=0; i<explanatorySet.length-1;i++){
-			result+= explanatorySet[i].getName()+",";
+		for(int i=0; i<attributeSet.size()-1;i++){
+			result+= attributeSet.get(i).getName()+",";
 		}
-		result += explanatorySet[explanatorySet.length-1]+"\n";
+		result += attributeSet.get(attributeSet.size()-1)+"\n";
 
 		for(int i=0;i<numberOfExamples;i++){
 			result+=i+":";
-			for(int j=0; j<getNumberofExplanatoryAttributes();j++){
+			for(int j=0; j<getNumberofAttibuteSet();j++){
 
 				result+=getValue(i,j)+",";
 			}
@@ -231,9 +234,9 @@ public class Data {
 	 * @return tuple
 	 */
 	public Tuple getItemSet(int index){
-		Tuple tuple = new Tuple(explanatorySet.length);
-		for(int i=0; i<explanatorySet.length;i++)
-			tuple.add(new DiscreteItem((DiscreteAttribute) explanatorySet[i],(String)data[index][i]),i);
+		Tuple tuple = new Tuple(attributeSet.size());
+		for(int i=0; i<attributeSet.size();i++)
+			tuple.add(new DiscreteItem((DiscreteAttribute) attributeSet.get(i),(String)data[index][i]),i);
 		return tuple;
 
 	}

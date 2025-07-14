@@ -1,12 +1,17 @@
 package mining;
 import data.*;
 
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
 /**
  * Classe che rappresenta un insieme di cluster (determinati da QT)
  */
 
-public class ClusterSet {
-    private Cluster C[] = new Cluster[0];
+public class ClusterSet implements Iterable {
+   // private Cluster C[] = new Cluster[0];
+    private Set<Cluster> C = new TreeSet<>();
 
     public ClusterSet(){
     }
@@ -16,21 +21,14 @@ public class ClusterSet {
      * @param c mining.Cluster da aggiungere
      */
     public void add(Cluster c){
-        Cluster tempC[] = new Cluster[C.length+1];
-        for(int i=0; i<C.length; i++)
-            tempC[i]=C[i];
-        tempC[C.length] = c;
-        C=tempC;
+        C.add(c);
     }
 
-    /**
-     * Restituisce il mining.Cluster all'indice i
-     * @param i indice
-     * @return C[i]
-     */
-    Cluster get(int i){
-        return C[i];
+    @Override
+    public Iterator<Cluster> iterator(){
+        return C.iterator();
     }
+
 
     /**
      * Restituisce una stringa fatta da ciascun centroide dell'insieme dei cluster
@@ -38,18 +36,20 @@ public class ClusterSet {
      */
     public String toString(){
         String result = "";
-        for(int i=0; i<C.length; i++){
-            result+= C[i].getCentroid() +",";
-        }
+        for(Cluster c : C)
+            result+= c.getCentroid() +",";
+
         return result;
     }
 
     // fornita
     public String toString(Data data){
         String str="";
-        for(int i=0; i<C.length; i++){
-            if(C[i]!= null){
-                str+=i+":"+C[i].toString(data)+"\n";
+        int i=0;
+        for(Cluster c: C){
+            i++;
+            if(c!= null){
+                str+=i+":"+c.toString(data)+"\n";
             }
         }
         return str;
