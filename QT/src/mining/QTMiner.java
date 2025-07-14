@@ -55,10 +55,16 @@ public class QTMiner {
         {
             // Ricerca cluster più popoloso
             Cluster c = buildCandidateCluster(data, isClustered);
+
+            // CONTROLLO IMPORTANTE: Se non ci sono più cluster possibili, esci
+            if(c == null || c.getSize() == 0) {
+                break;
+            }
+
             C.add(c);
             numclusters++;
 
-
+            // Marca come clusterizzate le tuple del cluster
             for(Integer tupleID : c){
                 isClustered[tupleID] = true;
             }
@@ -88,11 +94,25 @@ public class QTMiner {
             
             // Costruisco un nuovo cluster candidato con centro la tupla i
             Cluster candidate = new Cluster(data.getItemSet(i));
+
+            // Aggiunge il centro del cluster
+            candidate.addData(i);
+
             for(int j=0; j< data.getNumberOfExamples(); j++){
+                if(!isClustered[j] && i != j){
+                    double distance = data.getItemSet(i).getDistance(data.getItemSet(j));
+
+                    if(distance <= radius) {
+                        candidate.addData(j);
+                    }
+                }
+                /*
                 if(!isClustered[j] && data.getItemSet(i).getDistance(data.getItemSet(j)) <= radius) {
                     candidate.addData(j);
                 }
+                 */
             }
+
 
             // Se il cluster più popoloso finora, lo salvo
             if(candidate.getSize() > maxSize) {
