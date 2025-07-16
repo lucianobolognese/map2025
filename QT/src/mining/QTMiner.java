@@ -1,6 +1,7 @@
 package mining;
 import data.Data;
 
+import java.io.*;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -8,7 +9,7 @@ import java.util.Set;
  * Classe che include l'implementazione dell'algoritmo QT
  */
 
-public class QTMiner {
+public class QTMiner implements Serializable {
     private ClusterSet C;
     private double radius;
 
@@ -19,6 +20,51 @@ public class QTMiner {
     public QTMiner(double radius){
         C = new ClusterSet();
         this.radius = radius;
+    }
+
+    /**
+     * Apre il file identificato da fileName, legge l'oggetto ivi memorizzato e lo assegna a C
+     * @param fileName percorso + nome file
+     * @throws FileNotFoundException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+
+    public QTMiner(String fileName) throws FileNotFoundException, IOException, ClassNotFoundException{
+        try{
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream objectIn = new ObjectInputStream(fileIn);
+
+            C = (ClusterSet) objectIn.readObject();
+
+            objectIn.close();
+            fileIn.close();
+        } catch (Exception e1)
+        {
+            e1.printStackTrace();
+        }
+    }
+
+    /**
+     * Apre il file identificato da fileName e salva l'oggetto riferito da C in tale file
+     * @param fileName percorso + nome file
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+
+    public void salva(String fileName) throws FileNotFoundException, IOException {
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+
+            objectOut.writeObject(C);
+            System.out.println("File salvato correttamente in: "+fileName);
+            objectOut.close();
+            fileOut.close();
+        } catch (Exception e1)
+        {
+            e1.printStackTrace();
+        }
     }
 
     /**
@@ -55,11 +101,6 @@ public class QTMiner {
         {
             // Ricerca cluster più popoloso
             Cluster c = buildCandidateCluster(data, isClustered);
-
-            // CONTROLLO IMPORTANTE: Se non ci sono più cluster possibili, esci
-            if(c == null || c.getSize() == 0) {
-                break;
-            }
 
             C.add(c);
             numclusters++;

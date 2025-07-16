@@ -4,6 +4,7 @@ import data.Data;
 
 import data.Tuple;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * Classe mining.Cluster che modella un cluster
  */
-class Cluster implements Iterable<Integer>,Comparable<Cluster> {
+class Cluster implements Iterable<Integer>,Comparable<Cluster>, Serializable {
 	private Tuple centroid;
 
 	private Set<Integer> clusteredData = new HashSet<Integer>();
@@ -78,6 +79,14 @@ class Cluster implements Iterable<Integer>,Comparable<Cluster> {
 		str+=")";
 		return str;
 		
+	}
+
+	public String toStringshort2(Data data){
+		String str ="Centroid=(";
+		for(int i=0; i<centroid.getLength();i++)
+			str+=centroid.get(i);
+		str+=")";
+		return str;
 	}
 
 

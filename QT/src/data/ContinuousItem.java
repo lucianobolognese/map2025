@@ -1,11 +1,13 @@
 package data;
 
+import java.io.Serializable;
+
 /**
  * Classe che estende la classe Item e modella una coppia <Attributo continuo - valore numerico>
  *    per esempio Temperature=30.5
  */
 
-public class ContinuousItem extends Item {
+public class ContinuousItem extends Item implements Serializable {
 
     /**
      * Richiama il costruttore della super classe

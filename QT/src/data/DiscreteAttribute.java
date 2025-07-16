@@ -1,12 +1,13 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
  * Estende la classe data.Attribute e rappresenta un attributo discreto e categorico
  */
-public class DiscreteAttribute extends Attribute {
+public class DiscreteAttribute extends Attribute implements Serializable {
     /**
      * Treeset di oggetti String, uno per ciascun valore del dominio discreto.
      * I valori del dominio sono memorizzati in values seguendo un ordine lessicografico
