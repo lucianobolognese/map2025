@@ -1,10 +1,13 @@
 package data;
 
 import com.sun.source.tree.Tree;
+import database.DatabaseConnectionException;
+import database.DbAccess;
+import database.EmptySetException;
+import database.Example;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeSet;
+import java.sql.*;
+import java.util.*;
 
 /**
  * Classe concreta per modellare l'insieme di transazioni (o tuple o anche denominati esempi)
@@ -14,7 +17,7 @@ public class Data {
 	 * matrice n x m di tipo Object dove ogni riga modella una transazione descritta
 	 * dagli attributi riportati sulle colonne (n: righe, m: colonne)
 	 */
-	private Object data [][];
+	private List<Example> data = new ArrayList<Example>();
 	/**
 	 * cardinalità dell'insieme di transazioni (numero di righe in data)
 	 */
@@ -23,8 +26,85 @@ public class Data {
 	 * Lista collegata degli attributi in ciascuna tupla (schema della tabella di dati)
 	 */
 	private List<Attribute> attributeSet = new LinkedList<Attribute>();
-	
-	
+
+	/**
+	 * Costruttore che si occupa di caricare i dati di addestramento da una tabella della base di dati.
+	 * Il nome della tabella è un parametro del costruttore
+	 * @param table nome tabella base di dati
+	 * @throws EmptySetException
+	 */
+	public Data(String table) throws EmptySetException, EmptyDatasetException{
+		DbAccess db = new DbAccess();
+
+		try {
+			db.initConnection();
+			Connection connection = db.getConnection();
+			Statement statement = connection.createStatement();
+
+			ResultSet resultset = statement.executeQuery("SELECT * FROM "+table);
+			ResultSetMetaData metaData = resultset.getMetaData();
+			int columnCount = metaData.getColumnCount();
+			numberOfExamples = 0;
+
+			while (resultset.next()){
+				Example example = new Example();
+				// Recupera i valori delle colonne dai risultati
+				String outlook = resultset.getString("Outlook");
+				example.add(outlook);
+				Double temperature = resultset.getDouble("Temperature");
+				example.add(temperature);
+				String humidity = resultset.getString("umidity");
+				example.add(humidity);
+				String wind = resultset.getString("Wind");
+				example.add(wind);
+				String playTennis = resultset.getString("play");
+				example.add(playTennis);
+
+				numberOfExamples++;
+				data.add(example);
+			}
+
+
+		} catch (SQLException | DatabaseConnectionException e){
+			e.printStackTrace();
+		}
+
+		if(numberOfExamples == 0){
+			throw new EmptyDatasetException("Il dataset risulta vuoto");
+		}
+
+
+
+		TreeSet<String> outLookValues = new TreeSet<String>();
+		outLookValues.add("overcast");
+		outLookValues.add("rain");
+		outLookValues.add("sunny");
+		attributeSet.add(new DiscreteAttribute("Outlook",0, outLookValues));
+
+
+		attributeSet.add(new ContinuousAttribute("Temperature",1,3.2,38.7));
+
+
+		TreeSet<String> humidityValues = new TreeSet<String>();
+		humidityValues.add("high");
+		humidityValues.add("normal");
+		attributeSet.add(new DiscreteAttribute("Humidity",2,humidityValues));
+
+		TreeSet<String> windValues = new TreeSet<String>();
+		windValues.add("weak");
+		windValues.add("strong");
+		attributeSet.add(new DiscreteAttribute("Wind",3,windValues));
+
+		TreeSet<String> playTennisValues = new TreeSet<String>();
+		playTennisValues.add("yes");
+		playTennisValues.add("no");
+		attributeSet.add(new DiscreteAttribute("PlayTennis",4,playTennisValues));
+
+	}
+
+
+
+	/*
 	public Data() throws EmptyDatasetException{
 		
 		//data
@@ -120,6 +200,7 @@ public class Data {
 		
 		 numberOfExamples=14;
 
+
 		 if(numberOfExamples == 0){
 			 throw new EmptyDatasetException("Il dataset risulta vuoto");
 		 }
@@ -153,6 +234,7 @@ public class Data {
 		
 		
 	}
+	*/
 
 	/**
 	 * Restituisce cardinalità dell'insieme di transazioni
@@ -175,18 +257,20 @@ public class Data {
 	 * @return attributeSet
 	 */
 	public List<Attribute> getAttributeSchema(){
-		return attributeSet;
+		Attribute[] result = new Attribute[getNumberofAttibuteSet()];
+		result = attributeSet.toArray(result);
+		return Arrays.asList(result);
 	}
 
 	/**
 	 * Restituisce il valore assunto in data dall'attributo in posizione attributeIndex, nella riga in posizione
 	 * exampleIndex
-	 * @param exampleIndex indice di riga matrice "data"
-	 * @param attributeIndex indice di colonna matrice "data"
-	 * @return data[exampleIndex][attributeIndex]
+	 * @param exampleIndex numero di indice dell'esempio
+	 * @param attributeIndex numero di indice dell'attributo
+	 * @return data.get(exampleIndex).get(attributeIndex)
 	 */
 	public Object getValue(int exampleIndex, int attributeIndex){
-		return data[exampleIndex][attributeIndex];
+		return data.get(exampleIndex).get(attributeIndex);
 	}
 
 	/**

@@ -3,6 +3,7 @@ import data.EmptyDatasetException;
 import mining.ClusteringRadiusException;
 import mining.QTMiner;
 import keyboardinput.Keyboard;
+import database.*;
 
 import java.io.IOException;
 import java.util.NoSuchElementException;
@@ -18,18 +19,22 @@ public class MainTest {
 		char load;
 		Keyboard keyboard = new Keyboard();
 		Data data = null;
+		String table = "playtennis";
 
-
-		try{
-			data = new Data();
-		} catch(EmptyDatasetException e1){
-			System.out.println("Il dataset risulta vuoto");
-		}
 
 
 		String filename = "./cluster.serialized.dat";
 
 		do {
+			System.out.println("Inserisci nome tabella: ");
+			table = keyboard.readString();
+
+			try{
+				data = new Data(table);
+			} catch(EmptyDatasetException e1){
+				System.out.println("Il dataset risulta vuoto");
+			}
+
 			System.out.println("Scegli una opzione\n (1) Carica Cluster da File \n (2) Carica Dati\nRisposta: ");
 			load = keyboard.readChar();
 
@@ -75,9 +80,17 @@ public class MainTest {
 						System.out.println("Number of clusters:"+numIter);
 						System.out.println(qt.getC().toString(data));
 
-						System.out.println("Backup file name: ");
-						String nomefile = keyboard.readString();
-						qt.salva(nomefile);
+						char save;
+
+						System.out.println("Vuoi salvare il file?(y/n)");
+						save = keyboard.readChar();
+
+						if(save == 'y'){
+							System.out.println("Backup file name: ");
+							String nomefile = keyboard.readString();
+							qt.salva(nomefile);
+						}
+
 					} catch(ClusteringRadiusException e){
 						System.out.println("Solo un cluster!");
 					} catch (IOException e) {
