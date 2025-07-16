@@ -1,11 +1,13 @@
 package data;
 
+import java.io.Serializable;
+
 /**
  * Estende la classe data.Attribute e modella un attributo continuo (numerico).
  * Tale classe include i metodi per scalare l'attributo dal dominio dell'attributo all'intervalllo [0,1]
  * al fin di rendere confrontabili attributi aventi domini diversi
  */
-public class ContinuousAttribute extends Attribute {
+public class ContinuousAttribute extends Attribute implements Serializable {
     /**
      * Rappresentano gli estremi dell'intervallo di valori (dominio)
      */

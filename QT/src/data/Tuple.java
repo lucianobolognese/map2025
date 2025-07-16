@@ -1,11 +1,12 @@
 package data;
 
+import java.io.Serializable;
 import java.util.Set;
 
 /**
  * Rappresenta una tupla come sequenza di coppie attributo-valore
  */
-public class Tuple {
+public class Tuple implements Serializable {
     private Item[] tuple;
 
     /**

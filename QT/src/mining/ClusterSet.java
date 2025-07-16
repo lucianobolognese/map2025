@@ -1,17 +1,16 @@
 package mining;
 import data.*;
 
-import java.util.Iterator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Classe che rappresenta un insieme di cluster (determinati da QT)
  */
 
-public class ClusterSet implements Iterable {
+public class ClusterSet implements Iterable, Serializable {
    // private Cluster C[] = new Cluster[0];
-    private Set<Cluster> C = new TreeSet<>();
+    private List<Cluster> C = new ArrayList<>();
 
     public ClusterSet(){
     }
@@ -50,6 +49,18 @@ public class ClusterSet implements Iterable {
             i++;
             if(c!= null){
                 str+=i+":"+c.toString(data)+"\n";
+            }
+        }
+        return str;
+    }
+
+    public String toStringShort(Data data){
+        String str="";
+        int i=0;
+        for(Cluster c:C){
+            i++;
+            if(c!= null){
+                str+=i+":"+c.toStringshort2(data)+"\n";
             }
         }
         return str;
